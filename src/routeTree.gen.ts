@@ -10,149 +10,202 @@
 
 // Import Routes
 
-import { Route as rootRoute } from "./routes/__root";
-import { Route as PostsImport } from "./routes/posts";
-import { Route as AboutImport } from "./routes/about";
-import { Route as IndexImport } from "./routes/index";
-import { Route as PostsIndexImport } from "./routes/posts.index";
-import { Route as PostsPostIdImport } from "./routes/posts.$postId";
+import { Route as rootRoute } from './routes/__root'
+import { Route as PostsImport } from './routes/posts'
+import { Route as FormImport } from './routes/form'
+import { Route as ErrorImport } from './routes/error'
+import { Route as AboutImport } from './routes/about'
+import { Route as IndexImport } from './routes/index'
+import { Route as PostsIndexImport } from './routes/posts.index'
+import { Route as PostsPostIdImport } from './routes/posts.$postId'
 
 // Create/Update Routes
 
 const PostsRoute = PostsImport.update({
-  id: "/posts",
-  path: "/posts",
+  id: '/posts',
+  path: '/posts',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
+
+const FormRoute = FormImport.update({
+  id: '/form',
+  path: '/form',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ErrorRoute = ErrorImport.update({
+  id: '/error',
+  path: '/error',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const AboutRoute = AboutImport.update({
-  id: "/about",
-  path: "/about",
+  id: '/about',
+  path: '/about',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
 const IndexRoute = IndexImport.update({
-  id: "/",
-  path: "/",
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
 const PostsIndexRoute = PostsIndexImport.update({
-  id: "/",
-  path: "/",
+  id: '/',
+  path: '/',
   getParentRoute: () => PostsRoute,
-} as any);
+} as any)
 
 const PostsPostIdRoute = PostsPostIdImport.update({
-  id: "/$postId",
-  path: "/$postId",
+  id: '/$postId',
+  path: '/$postId',
   getParentRoute: () => PostsRoute,
-} as any);
+} as any)
 
 // Populate the FileRoutesByPath interface
 
-declare module "@tanstack/react-router" {
+declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    "/": {
-      id: "/";
-      path: "/";
-      fullPath: "/";
-      preLoaderRoute: typeof IndexImport;
-      parentRoute: typeof rootRoute;
-    };
-    "/about": {
-      id: "/about";
-      path: "/about";
-      fullPath: "/about";
-      preLoaderRoute: typeof AboutImport;
-      parentRoute: typeof rootRoute;
-    };
-    "/posts": {
-      id: "/posts";
-      path: "/posts";
-      fullPath: "/posts";
-      preLoaderRoute: typeof PostsImport;
-      parentRoute: typeof rootRoute;
-    };
-    "/posts/$postId": {
-      id: "/posts/$postId";
-      path: "/$postId";
-      fullPath: "/posts/$postId";
-      preLoaderRoute: typeof PostsPostIdImport;
-      parentRoute: typeof PostsImport;
-    };
-    "/posts/": {
-      id: "/posts/";
-      path: "/";
-      fullPath: "/posts/";
-      preLoaderRoute: typeof PostsIndexImport;
-      parentRoute: typeof PostsImport;
-    };
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutImport
+      parentRoute: typeof rootRoute
+    }
+    '/error': {
+      id: '/error'
+      path: '/error'
+      fullPath: '/error'
+      preLoaderRoute: typeof ErrorImport
+      parentRoute: typeof rootRoute
+    }
+    '/form': {
+      id: '/form'
+      path: '/form'
+      fullPath: '/form'
+      preLoaderRoute: typeof FormImport
+      parentRoute: typeof rootRoute
+    }
+    '/posts': {
+      id: '/posts'
+      path: '/posts'
+      fullPath: '/posts'
+      preLoaderRoute: typeof PostsImport
+      parentRoute: typeof rootRoute
+    }
+    '/posts/$postId': {
+      id: '/posts/$postId'
+      path: '/$postId'
+      fullPath: '/posts/$postId'
+      preLoaderRoute: typeof PostsPostIdImport
+      parentRoute: typeof PostsImport
+    }
+    '/posts/': {
+      id: '/posts/'
+      path: '/'
+      fullPath: '/posts/'
+      preLoaderRoute: typeof PostsIndexImport
+      parentRoute: typeof PostsImport
+    }
   }
 }
 
 // Create and export the route tree
 
 interface PostsRouteChildren {
-  PostsPostIdRoute: typeof PostsPostIdRoute;
-  PostsIndexRoute: typeof PostsIndexRoute;
+  PostsPostIdRoute: typeof PostsPostIdRoute
+  PostsIndexRoute: typeof PostsIndexRoute
 }
 
 const PostsRouteChildren: PostsRouteChildren = {
   PostsPostIdRoute: PostsPostIdRoute,
   PostsIndexRoute: PostsIndexRoute,
-};
+}
 
-const PostsRouteWithChildren = PostsRoute._addFileChildren(PostsRouteChildren);
+const PostsRouteWithChildren = PostsRoute._addFileChildren(PostsRouteChildren)
 
 export interface FileRoutesByFullPath {
-  "/": typeof IndexRoute;
-  "/about": typeof AboutRoute;
-  "/posts": typeof PostsRouteWithChildren;
-  "/posts/$postId": typeof PostsPostIdRoute;
-  "/posts/": typeof PostsIndexRoute;
+  '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/error': typeof ErrorRoute
+  '/form': typeof FormRoute
+  '/posts': typeof PostsRouteWithChildren
+  '/posts/$postId': typeof PostsPostIdRoute
+  '/posts/': typeof PostsIndexRoute
 }
 
 export interface FileRoutesByTo {
-  "/": typeof IndexRoute;
-  "/about": typeof AboutRoute;
-  "/posts/$postId": typeof PostsPostIdRoute;
-  "/posts": typeof PostsIndexRoute;
+  '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/error': typeof ErrorRoute
+  '/form': typeof FormRoute
+  '/posts/$postId': typeof PostsPostIdRoute
+  '/posts': typeof PostsIndexRoute
 }
 
 export interface FileRoutesById {
-  __root__: typeof rootRoute;
-  "/": typeof IndexRoute;
-  "/about": typeof AboutRoute;
-  "/posts": typeof PostsRouteWithChildren;
-  "/posts/$postId": typeof PostsPostIdRoute;
-  "/posts/": typeof PostsIndexRoute;
+  __root__: typeof rootRoute
+  '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/error': typeof ErrorRoute
+  '/form': typeof FormRoute
+  '/posts': typeof PostsRouteWithChildren
+  '/posts/$postId': typeof PostsPostIdRoute
+  '/posts/': typeof PostsIndexRoute
 }
 
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath;
-  fullPaths: "/" | "/about" | "/posts" | "/posts/$postId" | "/posts/";
-  fileRoutesByTo: FileRoutesByTo;
-  to: "/" | "/about" | "/posts/$postId" | "/posts";
-  id: "__root__" | "/" | "/about" | "/posts" | "/posts/$postId" | "/posts/";
-  fileRoutesById: FileRoutesById;
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/error'
+    | '/form'
+    | '/posts'
+    | '/posts/$postId'
+    | '/posts/'
+  fileRoutesByTo: FileRoutesByTo
+  to: '/' | '/about' | '/error' | '/form' | '/posts/$postId' | '/posts'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/error'
+    | '/form'
+    | '/posts'
+    | '/posts/$postId'
+    | '/posts/'
+  fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute;
-  AboutRoute: typeof AboutRoute;
-  PostsRoute: typeof PostsRouteWithChildren;
+  IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
+  ErrorRoute: typeof ErrorRoute
+  FormRoute: typeof FormRoute
+  PostsRoute: typeof PostsRouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  ErrorRoute: ErrorRoute,
+  FormRoute: FormRoute,
   PostsRoute: PostsRouteWithChildren,
-};
+}
 
 export const routeTree = rootRoute
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>();
+  ._addFileTypes<FileRouteTypes>()
 
 /* ROUTE_MANIFEST_START
 {
@@ -162,6 +215,8 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/about",
+        "/error",
+        "/form",
         "/posts"
       ]
     },
@@ -170,6 +225,12 @@ export const routeTree = rootRoute
     },
     "/about": {
       "filePath": "about.tsx"
+    },
+    "/error": {
+      "filePath": "error.tsx"
+    },
+    "/form": {
+      "filePath": "form.tsx"
     },
     "/posts": {
       "filePath": "posts.tsx",
